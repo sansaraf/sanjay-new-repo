@@ -1,0 +1,137 @@
+Lecture 4 Linux Special Variables Basic Shell Scripts
+=====================================================
+
+Recap:
+etc/shadow
+sudo su
+local and environment variables
+
+A) Variables
+-------------
+Purpose: to store large number of data sets which can be resued any number of times. eg: Hosts, IPs, Ports, Dynamic substitution like dynamic hosts in cloud/microservices
+ 
+Local (current shell), Environment (child processes), Shell (for shell to function as desired - can be local or global)
+Following files are read at OS boot up:
+/etc/profile
+/home/ubuntu/.profile
+contains settings like terminal, shell, default directory, home directories, available paths, can set custom variables here
+
+1. $ env | more  (explore the more command) ***
+
+2. Environment variables: $PATH, $HOME
+
+3. $ cat .bash_history, 
+
+**$ cat .bash_logout
+
+4. custom enviroment variables
+env name="Ethans"
+env PATH=$PATH:/etc/passwd **
+
+B) Pipes and Filters
+--------------------
+1. Pipes: | command1 > command2, 2 or more commands mashup
+cat abc.txt | more
+cat veggies.txt | grep broccoli
+
+
+b) Sort: -n, -r, -f 
+
+
+3. read -p & echo
+-----------------
+
+$ read -p "enter your name: " name
+$ echo "Hello $name"
+
+
+4. variables, readonly, unset
+-----------------------------
+
+#!/bin/sh
+
+readonly NAME="Zara Ali"
+NAME ="Zara Ali"
+echo $NAME
+
+#!/bin/sh
+
+NAME="Zara Ali"
+unset NAME
+echo $NAME
+
+5. Special variables: 
+---------------------
+$0 : script name
+$# : number of command line arguments
+$1,....$n : first argument and so on
+$@ : array of arguments
+$$ pid of current shell
+
+#!/bin/bash
+
+echo $0
+echo $#
+echo $1
+echo $@
+echo $$
+
+$ a.sh xx yy zz
+
+
+write shell script to print the above
+Script:
+First Name:
+Last Name:
+Age:
+Gender:
+Company: 
+You have entered <n> values: <values>
+
+Practical Use: Display filename, Parse lists of IPs/Ports and iterate through them
+
+6. Arrays:
+----------
+scalar vs arrays
+names[0]
+names[1]
+names[2]
+names[3]
+
+$ cat arraytest.sh
+names[0]=Dharmendra
+names[1]=Sanjay
+names[2]=Vinod
+names[3]=Shaswati
+names2=(Mangesh Malcolm Chaitanya)
+
+echo "${names[0]}"		#Print value at zero
+echo "${names[*]}"		#Print all value
+echo "${names2[@]}"		#Print all value
+echo "${#names[@]}"		#count of values 
+echo "${#names2[@]}"		#count of values 
+
+7. Operators:
+-------------
++, -, *, /, %, =, ==, !=
+Basic Calculator(bc): var = `echo "$a + $b"|bc`
+expr: echo "value is: ` expr $a + $b `"
+Area
+Simple Interest
+
+
+
+
+
+a) ubuntu@ip-172-31-19-240:~/parth$ vi area.sh
+read -p "Enter the radius: " R
+area=`echo "scale=4;(22*$R*$R)/7" | bc`
+echo "The area is: " $area
+
+b) ubuntu@ip-172-31-19-240:~/parth$ vi interest.sh
+read -p "Enter the principal amount: " Pa
+read -p "Enter the rate of interest: " r
+read -p "Enter the years: " y
+
+SI=`echo "($Pa*$r*$y)/100"|bc`
+echo "Simple interest is: " $SI

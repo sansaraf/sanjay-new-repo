@@ -1,0 +1,70 @@
+﻿Lecture 2 Linux File System File Permissions Shells
+===================================================
+
+File System
+------------
+In Unix & Linux every device on your computer is represented by a file or a folder
+1. 
+cd ~
+pwd
+up/down arrow
+touch
+
+2. sudo apt-get install tree
+
+3. tree -L 1 /home/ubuntu ('/' is for root, for level, try using 1,2,3 one at a time)
+
+$ tree  /etc/grafana/
+
+
+4. Everything except /home needs administrator previleges
+
+File Permissions
+-----------------
+
+3. chmod
+R 4
+W 2
+X 1
+
+Bourne Again Shell (bash)
+
+How to check which shell am I using? 
+
+ps -p $$
+or
+echo "$SHELL"
+or
+echo $0 
+
+
+4. cat /etc/shells 
+List pathnames of valid login shells currently installed
+
+5. cat /etc/passwd
+
+6. grep "jenkins" /etc/passwd
+
+
+7. grep "^$USER" /etc/passwd
+Print the default shell name. The default shell runs when you open a terminal window.
+
+8. chsh -s /bin/ksh
+Change the shell used from /bin/bash (default) to /bin/ksh for your account
+
+9. $ echo "My current shell is $SHELL ($0)"
+
+
+
+Exercise:
+---------
+1. what is etc/shadow? 
+Ans- contains encrypted password as well as other information such as account or password expiration values
+
+man ls
+history
+which
+whereis
+apropos
+tree
+.bash_history

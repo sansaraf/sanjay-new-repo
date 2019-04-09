@@ -1,0 +1,102 @@
+Lecture 3: Linux Shadow file Sudo Su Local_Global variables
+===========================================================
+
+Home work
+---------
+1. /etc/passwd : stores passwords???
+what is etc/shadow?
+
+Commands
+--------
+
+$ id
+uid=1000(ubuntu) gid=1000(ubuntu) groups=1000(ubuntu),4(adm),20(dialout),24(cdrom),25(floppy),27(sudo),29(audio),30(dip),44(video),46(plugdev),108(lxd),114(netdev),999(docker)
+
+A)	su vs sudo
+---------------
+su <user> or su (no parameter ~ 'root') 
+
+.bashrc vs /etc/profile
+
+$ sudo su  => non-login shell, only .bashrc is executed. # shell changed to KSH
+
+
+# exit
+$ sudo su - => login shell, both /etc/profile and .bashrc are executed. 
+# pwd
+/root => environment changes to 'root'
+# id 
+uid=0(root) gid=0(root) groups=0(root)  => su causes switch to 'root'
+# exit
+$ sudo /bin/bash => non-login shell, only .bashrc is executed.
+
+
+root@ip-172-31-19-240:~# su ubuntu
+$ id
+uid=1000(ubuntu) gid=1000(ubuntu) groups=1000(ubuntu),4(adm),20(dialout),24(cdrom),25(floppy),27(sudo),29(audio),30(dip),44(video),46(plugdev),108(lxd),114(netdev),999(docker)
+$ shopt -q login_shell && echo 'Login shell' || echo 'No login shell'
+
+B)	ls -ltr
+-----------
+sort by modified date, size
+i => inode number
+s => block size
+
+Variables
+---------
+A) Local and Environment variables
+
+1. Set only for current shell 
+$ MY_VAR="Test variable 1"
+$ echo $MY_VAR
+Test variable 1
+
+2.
+$ vi var_example.sh
+-------------------------
+echo $MY_VAR
+
+MY_VAR_INTERNAL="Internal Variable"
+echo $MY_VAR_INTERNAL
+-------------------------
+
+3.
+$ bash var_example.sh
+<blank>
+
+4. Set it for current shell and all processes started from current shell 
+$ export MY_VAR="Test variable 2"
+$ bash var_example.sh
+Test variable 2
+
+5. Set it for all future bash sessions
+Now add below in .bashrc of current user's home directory. 
+export MY_VAR="Test variable 3"
+
+$ vi .bashrc
+
+current terminal and 2nd terminal:
+$ bash var_example.sh
+Test variable 1 (notice it is not set to Test variable 2
+Internal Variable
+
+open a fresh terminal:
+$ bash var_example.sh
+Test variable 3
+Internal Variable
+
+6. To set it permanently, and system wide (all users, all processes) add set variable in /etc/environment:
+
+/etc/environment
+This file only accepts variable assignments like:
+
+VARNAME="my value"
+
+7. You can also set environment variables from a script using 'export' command and 'sourcing' the script. 
+This will persist the values even after the script has completed execution. 
+$ source ./script.sh OR
+$ . ./script.sh
+
+
+
+
